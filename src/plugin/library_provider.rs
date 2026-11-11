@@ -18,7 +18,7 @@ impl LibraryProvider {
     }
 }
 
-#[interface(name = "one.playtron.plugin.LibraryProvider")]
+#[interface(name = "inc.kora.plugin.LibraryProvider")]
 impl LibraryProvider {
     /// Human readable name of the library provider
     #[zbus(property)]
@@ -154,9 +154,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   GetInstallOptions "s" "460950"
     async fn get_install_options(
         &self,
@@ -166,9 +166,9 @@ impl LibraryProvider {
         Ok(Vec::new())
     }
 
-    /// busctl --user call one.playtron.BasePlugin \
-    ///   /one/playtron/BasePlugin/PluginClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.BasePlugin \
+    ///   /inc/kora/BasePlugin/PluginClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   GetInstalledApps
     async fn get_installed_apps(&self) -> fdo::Result<Vec<InstalledApp>> {
         log::info!("get_installed_apps");
@@ -182,9 +182,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   GetProviderItem "s" "460950"
     async fn get_provider_item(&self, app_id: String) -> fdo::Result<ProviderItem> {
         match self.service.get_provider_item(&app_id).await {
@@ -197,9 +197,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   GetProviderItems
     async fn get_provider_items(&self) -> fdo::Result<Vec<ProviderItem>> {
         log::info!("Getting provider items");
@@ -219,9 +219,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   GetLaunchOptions "s" "460950"
     async fn get_launch_options(
         &self,
@@ -250,9 +250,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.BasePlugin \
-    ///   /one/playtron/BasePlugin/PluginClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.BasePlugin \
+    ///   /inc/kora/BasePlugin/PluginClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   Install "ssa{sv}" "Cinebench" "/dev/sda1" 2 'os' s windows 'language' s english
     async fn install(
         &self,
@@ -271,9 +271,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   MoveItem "ss" "460950" "/dev/sda3"
     async fn move_item(
         &self,
@@ -303,9 +303,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   Uninstall "s" "460950"
     async fn uninstall(&self, app_id: &str) -> fdo::Result<()> {
         self.service.uninstall(app_id).await
@@ -317,9 +317,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   Update "s" "460950"
     async fn update(&self, _app_id: String) -> fdo::Result<()> {
         Err(fdo::Error::Failed("Update is not supported".to_string()))
@@ -329,9 +329,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   GetSavePathPatterns ss 730 windows
     async fn get_save_path_patterns(
         &self,
@@ -349,9 +349,9 @@ impl LibraryProvider {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.plugin.LibraryProvider \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.plugin.LibraryProvider \
     ///   Refresh
     fn refresh(&self) -> fdo::Result<()> {
         log::info!("refresh");
