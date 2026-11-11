@@ -12,7 +12,7 @@ impl Cryptography {
     }
 }
 
-#[interface(name = "one.playtron.auth.Cryptography")]
+#[interface(name = "inc.kora.auth.Cryptography")]
 impl Cryptography {
     /// Returns the public key used to send encrypted secrets.
     /// The data must be returned in a PEM encoded string. The
@@ -20,9 +20,9 @@ impl Cryptography {
     ///
     /// # Example
     ///
-    /// busctl --user call one.playtron.EpicGames \
-    ///   /one/playtron/EpicGames/LegendaryClient0 \
-    ///   one.playtron.auth.Cryptography \
+    /// busctl --user call inc.kora.EpicGames \
+    ///   /inc/kora/EpicGames/LegendaryClient0 \
+    ///   inc.kora.auth.Cryptography \
     ///   GetPublicKey
     async fn get_public_key(&mut self) -> (String, String) {
         let key_type: &str = "RSA-SHA256";

@@ -15,9 +15,9 @@ use crate::plugin::library_provider::LibraryProvider;
 
 /// zbus proxy for subscribing to playserve's Manager drive signals.
 #[zbus::proxy(
-    interface = "one.playtron.plugin.Manager",
-    default_service = "one.playtron.Playserve",
-    default_path = "/one/playtron/plugins/Manager"
+    interface = "inc.kora.plugin.Manager",
+    default_service = "inc.kora.Playserve",
+    default_path = "/inc/kora/plugins/Manager"
 )]
 trait PluginManager {
     #[zbus(signal)]
