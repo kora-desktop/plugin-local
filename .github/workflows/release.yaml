@@ -1,5 +1,6 @@
 # Build and publish a release using semantic-release whenever changes are merged
-# into main.
+# into main, then put the RPMs it built in the package repositories. Run by hand
+# with a tag to upload the RPMs of a release that already exists.
 name: "🎉 Release"
 
 on:
@@ -8,6 +9,12 @@ on:
       - main
     paths-ignore:
       - README.md
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag whose RPMs to upload instead of cutting a release (e.g. v1.6.2)"
+        required: false
+        type: string
 
 env:
   CARGO_TERM_COLOR: always
@@ -22,17 +29,46 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        if: ${{ inputs.tag == '' }}
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install Dependencies
+        if: ${{ inputs.tag == '' }}
         run: npm install @semantic-release/exec @google/semantic-release-replace-plugin @semantic-release/git
 
       - name: Release
+        if: ${{ inputs.tag == '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: make sem-release
+
+      - name: Fetch the RPMs of an existing release
+        if: ${{ inputs.tag != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release download "${{ inputs.tag }}" --pattern '*.rpm' --dir dist
+
+      # Each rpm on its own, under its file name, where Kora and the image read them.
+      - name: Upload to the package repositories
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-west-2
+        run: |
+          shopt -s nullglob
+          rpms=(dist/playtron-plugin-local-*-1.*.rpm)
+          if [ ${#rpms[@]} -eq 0 ]; then
+            echo "No release was created"
+            exit 0
+          fi
+          for rpm in "${rpms[@]}"; do
+            name=$(basename "$rpm")
+            arch=${name%.rpm}
+            arch=${arch##*.}
+            aws s3 cp "$rpm" "s3://playtron-dev2-global-os-public/repos/playtron-app/$arch/$name"
+          done
